@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import Logo from './Logo';
 
-interface IProps {}
-
 const Header = styled.header`
   height: 56px;
   width: 100%;
@@ -53,10 +51,14 @@ const LogoContainer = styled.div`
   height: 80%;
 `;
 
-const Toolbar: React.FC<IProps> = () => {
+interface IProps {
+  drawerToggleHandler: () => void;
+}
+
+const Toolbar: React.FC<IProps> = ({ drawerToggleHandler }) => {
   return (
     <Header>
-      <BurgerButton>
+      <BurgerButton onClick={drawerToggleHandler}>
         <div />
         <div />
         <div />
@@ -64,7 +66,7 @@ const Toolbar: React.FC<IProps> = () => {
       <LogoContainer>
         <Logo />
       </LogoContainer>
-      <Nav />
+      <Nav>Navigation Items</Nav>
     </Header>
   );
 };

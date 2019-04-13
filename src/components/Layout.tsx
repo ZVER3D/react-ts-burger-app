@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
+import SideDrawer from './navigation/SideDrawer';
 import Toolbar from './navigation/Toolbar';
 
 interface IProps {}
@@ -15,9 +16,14 @@ const Layout: React.FC<IProps> = ({ children }) => {
     setShowDrawer(!showDrawer);
   };
 
+  const drawerCloseHandler = () => {
+    setShowDrawer(false);
+  };
+
   return (
     <>
-      <Toolbar />
+      <Toolbar drawerToggleHandler={drawerToggleHandler} />
+      <SideDrawer isOpen={showDrawer} closeHandler={drawerCloseHandler} />
       <Main>{children}</Main>
     </>
   );

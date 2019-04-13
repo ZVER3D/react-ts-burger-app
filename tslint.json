@@ -4,6 +4,7 @@
     "jsx-boolean-value": false,
     "no-empty-interface": false,
     "no-submodule-imports": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "member-access": false
   }
 }
