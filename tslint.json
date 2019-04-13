@@ -1,8 +1,9 @@
 {
   "extends": ["tslint:latest", "tslint-config-prettier", "tslint-react", "tslint-react-hooks"],
   "rules": {
-    "jsx-boolean-value": "never",
+    "jsx-boolean-value": false,
     "no-empty-interface": false,
-    "no-submodule-imports": false
+    "no-submodule-imports": false,
+    "object-literal-sort-keys": false
   }
 }
