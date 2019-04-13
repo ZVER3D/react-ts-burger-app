@@ -1,5 +1,7 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
 import styled from 'styled-components/macro';
+import { RootContext } from '../../store/RootStore';
 import Backdrop from '../UI/Backdrop';
 import Logo from './Logo';
 
@@ -34,16 +36,15 @@ const LogoContainer = styled.div`
   margin-bottom: 32px;
 `;
 
-interface IProps {
-  isOpen: boolean;
-  closeHandler: () => void;
-}
+interface IProps {}
 
-const SideDrawer: React.FC<IProps> = ({ isOpen, closeHandler }) => {
+const SideDrawer = observer<IProps>(() => {
+  const { drawer } = useContext(RootContext);
+
   return (
     <>
-      <Backdrop isOpen={isOpen} closeHandler={closeHandler} />
-      <Div className={isOpen ? 'open' : 'close'} onClick={closeHandler}>
+      <Backdrop isOpen={drawer.isOpen} closeHandler={drawer.close} />
+      <Div className={drawer.isOpen ? 'open' : 'close'} onClick={drawer.close}>
         <LogoContainer>
           <Logo />
         </LogoContainer>
@@ -51,6 +52,6 @@ const SideDrawer: React.FC<IProps> = ({ isOpen, closeHandler }) => {
       </Div>
     </>
   );
-};
+});
 
 export default SideDrawer;

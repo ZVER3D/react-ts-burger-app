@@ -1,9 +1,11 @@
-import { observable } from 'mobx';
 import { createContext } from 'react';
+import { DrawerStore } from './DrawerStore';
 
-class Store {
+export class RootStore {
   // TODO: make it computed
-  @observable isAuthenticated: boolean = false;
+  // @observable isAuthenticated: boolean = false;
+
+  drawer = new DrawerStore();
 }
 
-export const RootStore = createContext(new Store());
+export const RootContext = createContext(new RootStore());

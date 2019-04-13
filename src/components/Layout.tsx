@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/macro';
 import SideDrawer from './navigation/SideDrawer';
 import Toolbar from './navigation/Toolbar';
@@ -10,20 +10,10 @@ const Main = styled.main`
 `;
 
 const Layout: React.FC<IProps> = ({ children }) => {
-  const [showDrawer, setShowDrawer] = useState(false);
-
-  const drawerToggleHandler = () => {
-    setShowDrawer(!showDrawer);
-  };
-
-  const drawerCloseHandler = () => {
-    setShowDrawer(false);
-  };
-
   return (
     <>
-      <Toolbar drawerToggleHandler={drawerToggleHandler} />
-      <SideDrawer isOpen={showDrawer} closeHandler={drawerCloseHandler} />
+      <Toolbar />
+      <SideDrawer />
       <Main>{children}</Main>
     </>
   );

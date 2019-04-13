@@ -1,5 +1,7 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
 import styled from 'styled-components/macro';
+import { RootContext } from '../../store/RootStore';
 import Logo from './Logo';
 
 const Header = styled.header`
@@ -51,14 +53,14 @@ const LogoContainer = styled.div`
   height: 80%;
 `;
 
-interface IProps {
-  drawerToggleHandler: () => void;
-}
+interface IProps {}
 
-const Toolbar: React.FC<IProps> = ({ drawerToggleHandler }) => {
+const Toolbar = observer<IProps>(() => {
+  const { drawer } = useContext(RootContext);
+
   return (
     <Header>
-      <BurgerButton onClick={drawerToggleHandler}>
+      <BurgerButton onClick={drawer.toggle}>
         <div />
         <div />
         <div />
@@ -69,6 +71,6 @@ const Toolbar: React.FC<IProps> = ({ drawerToggleHandler }) => {
       <Nav>Navigation Items</Nav>
     </Header>
   );
-};
+});
 
 export default Toolbar;
