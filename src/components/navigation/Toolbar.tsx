@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components/macro';
 import { RootContext } from '../../store/RootStore';
 import Logo from './Logo';
+import NavigationItems from './NavigationItems';
 
 const Header = styled.header`
   height: 56px;
@@ -68,7 +69,9 @@ const Toolbar = observer<IProps>(() => {
       <LogoContainer>
         <Logo />
       </LogoContainer>
-      <Nav>Navigation Items</Nav>
+      <Nav>
+        <NavigationItems />
+      </Nav>
     </Header>
   );
 });

@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 import { RootContext } from '../../store/RootStore';
 import Backdrop from '../UI/Backdrop';
 import Logo from './Logo';
+import NavigationItems from './NavigationItems';
 
 const Div = styled.div`
   position: fixed;
@@ -48,7 +49,9 @@ const SideDrawer = observer<IProps>(() => {
         <LogoContainer>
           <Logo />
         </LogoContainer>
-        <nav>Navigation Items</nav>
+        <nav>
+          <NavigationItems />
+        </nav>
       </Div>
     </>
   );
