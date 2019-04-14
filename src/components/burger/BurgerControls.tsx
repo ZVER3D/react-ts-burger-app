@@ -64,7 +64,11 @@ const controls = [
   { label: 'Meat', type: 'meat' },
 ];
 
-const BurgerControls = observer(() => {
+interface IProps {
+  orderHandler: () => void;
+}
+
+const BurgerControls = observer<IProps>(({ orderHandler }) => {
   const { burger } = useContext(RootContext);
 
   const moreHandler = (type: string) => () => burger.addIngredient(type as any);
@@ -84,7 +88,9 @@ const BurgerControls = observer(() => {
           disabled={burger.ingredients[ctrl.type] === 0}
         />
       ))}
-      <Button disabled={!burger.purchasable}>ORDER NOW</Button>
+      <Button onClick={orderHandler} disabled={!burger.purchasable}>
+        ORDER NOW
+      </Button>
     </Div>
   );
 });
