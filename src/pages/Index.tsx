@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Burger from '../components/burger/Burger';
 import BurgerControls from '../components/burger/BurgerControls';
 
-interface IProps {}
+const Index: React.FC = () => {
+  const [purchasing, setPurchasing] = useState(false);
 
-const Index: React.FC<IProps> = () => {
   return (
     <>
       <Burger />

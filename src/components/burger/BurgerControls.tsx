@@ -4,8 +4,6 @@ import styled, { keyframes } from 'styled-components/macro';
 import { RootContext } from '../../store/RootStore';
 import BurgerControl from './BurgerControl';
 
-interface IProps {}
-
 const Div = styled.div`
   width: 100%;
   background-color: #cf8f2e;
@@ -66,7 +64,7 @@ const controls = [
   { label: 'Meat', type: 'meat' },
 ];
 
-const BurgerControls: React.FC<IProps> = observer(() => {
+const BurgerControls = observer(() => {
   const { burger } = useContext(RootContext);
 
   const moreHandler = (type: string) => () => burger.addIngredient(type as any);
@@ -75,7 +73,7 @@ const BurgerControls: React.FC<IProps> = observer(() => {
   return (
     <Div>
       <p>
-        Current Price: <strong>{burger.totalPrice}</strong>
+        Current Price: <strong>{burger.totalPrice.toFixed(2)}</strong>
       </p>
       {controls.map(ctrl => (
         <BurgerControl
