@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
-type Ingredient = 'bread-top' | 'bread-bottom' | 'meat' | 'cheese' | 'salad' | 'bacon';
+export type IngredientType = 'bread-top' | 'bread-bottom' | 'meat' | 'cheese' | 'salad' | 'bacon';
 
 interface IProps {
-  type: Ingredient;
+  type: IngredientType;
 }
 
 const BreadTop = styled.div`

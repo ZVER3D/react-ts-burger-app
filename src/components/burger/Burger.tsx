@@ -1,12 +1,10 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
 import styled from 'styled-components/macro';
+import { RootContext } from '../../store/RootStore';
 import BurgerIngredient from './BurgerIngredient';
 
-interface IProps {
-  ingredients: {
-    [x: string]: number;
-  };
-}
+interface IProps {}
 
 const Div = styled.div`
   width: 100%;
@@ -33,7 +31,11 @@ const Div = styled.div`
   }
 `;
 
-const Burger: React.FC<IProps> = ({ ingredients }) => {
+const Burger: React.FC<IProps> = observer(() => {
+  const {
+    burger: { ingredients },
+  } = useContext(RootContext);
+
   const ingr: JSX.Element[] = Object.entries(ingredients)
     .map(([ing, amount], i) => {
       const res: JSX.Element[] = [];
@@ -51,6 +53,6 @@ const Burger: React.FC<IProps> = ({ ingredients }) => {
       <BurgerIngredient type="bread-bottom" />
     </Div>
   );
-};
+});
 
 export default Burger;
