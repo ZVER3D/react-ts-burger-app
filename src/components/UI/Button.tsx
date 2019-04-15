@@ -34,7 +34,7 @@ const Btn = styled.button`
 interface IProps {
   disabled?: boolean;
   type: 'success' | 'danger';
-  clickHandler: () => void;
+  clickHandler: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const Button: React.FC<IProps> = ({ type, disabled = false, clickHandler, children }) => (
