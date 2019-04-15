@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const Main = styled.div`
-  margin: 20px auto;
+  margin: 0 auto;
   width: 80%;
   text-align: center;
   box-shadow: 0 2px 3px #ccc;
@@ -63,7 +63,11 @@ const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
         {/** TODO: Add choise of delivery method */}
         {mode === 'checkout' ? (
           <>
-            <Button clickHandler={orderHandler!} disabled={!isFormValid()} type="success">
+            <p>
+              This is where credit card stuff should go, using API services like Stripe. But im not
+              gonna do it, because im lazy 😝.
+            </p>
+            <Button clickHandler={orderHandler} disabled={!isFormValid()} type="success">
               ORDER NOW
             </Button>
             <Button clickHandler={cancelHandler!} type="danger">
