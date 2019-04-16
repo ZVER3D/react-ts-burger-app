@@ -31,14 +31,12 @@ const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
   // TODO: get initial vals from user context
   const [name, setName] = useInput('');
   const [address, setAddress] = useInput('');
-  const [zipcode, setZipcode] = useInput('');
   const [email, setEmail] = useInput('');
   const [deliveryMethod, setDeliveryMethod] = useInput('');
 
   const [errors, setErrors] = useState({
     name: '',
     address: '',
-    zipcode: '',
     email: '',
     deliveryMethod: '',
   });
@@ -59,7 +57,6 @@ const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
         <Input label="Your Name" value={name} onChangeHandler={setName} />
         <Input label="Email" value={email} onChangeHandler={setEmail} />
         <Input label="Address" value={address} onChangeHandler={setAddress} />
-        <Input label="ZipCode" value={zipcode} onChangeHandler={setZipcode} />
         {/** TODO: Add choise of delivery method */}
         {mode === 'checkout' ? (
           <>

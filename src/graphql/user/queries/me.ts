@@ -1,11 +1,13 @@
 import gql from 'graphql-tag';
 
-export const meQuery = gql`
+export const ME_QUERY = gql`
   query Me {
     me {
       id
       email
       name
+      address
+      deliveryMethod
     }
   }
 `;

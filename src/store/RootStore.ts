@@ -1,11 +1,10 @@
 import { createContext } from 'react';
 import { BurgerStore } from './BurgerStore';
 import { DrawerStore } from './DrawerStore';
+import { UserStore } from './UserStore';
 
 export class RootStore {
-  // TODO: make it computed
-  // @observable isAuthenticated: boolean = false;
-
+  user = new UserStore();
   drawer = new DrawerStore();
   burger = new BurgerStore();
 }
