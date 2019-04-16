@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { useQuery } from 'react-apollo-hooks';
 import styled from 'styled-components/macro';
 import { MeQuery } from '../generated/graphql';
-import { ME_QUERY } from '../graphql/user/queries/me';
+import { ME_QUERY } from '../graphql/queries/me';
 import { RootContext } from '../store/RootStore';
 import SideDrawer from './navigation/SideDrawer';
 import Toolbar from './navigation/Toolbar';

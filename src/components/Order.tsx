@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { IIngredients } from '../store/BurgerStore';
 
 interface IProps {
   price: number;
-  ingredients: IIngredients;
+  ingredients: Array<{ name: string; amount: number }>;
 }
 
-const Main = styled.div`
+export const OrderStyle = styled.div`
   width: 80%;
   border: 1px solid #eee;
   box-shadow: 0 2px 3px #ccc;
@@ -25,19 +24,19 @@ const Ingredient = styled.span`
 `;
 
 const Order: React.FC<IProps> = ({ price, ingredients }) => {
-  const ings = Object.entries(ingredients).map(([name, amount]) => (
+  const ings = ingredients.map(({ name, amount }) => (
     <Ingredient key={name}>
       {name} ({amount})
     </Ingredient>
   ));
 
   return (
-    <Main>
+    <OrderStyle>
       <p>Ingredients: {ings}</p>
       <p>
         Price: <strong>USD {price.toFixed(2)}</strong>
       </p>
-    </Main>
+    </OrderStyle>
   );
 };
 
