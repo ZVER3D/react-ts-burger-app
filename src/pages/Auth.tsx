@@ -68,6 +68,7 @@ const Auth = observer<IProps>(({ history }) => {
     }
     // TODO: call login mutation
     if (user.redirect) {
+      user.redirect = false;
       history.push('/checkout');
     }
   };
@@ -79,6 +80,7 @@ const Auth = observer<IProps>(({ history }) => {
     }
     // TODO: call register mutation
     if (user.redirect) {
+      user.redirect = false;
       history.push('/checkout');
     }
   };

@@ -9,6 +9,11 @@ import * as serviceWorker from './serviceWorker';
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   credentials: 'include',
+  onError: ({ networkError }) => {
+    if (networkError) {
+      console.error(networkError);
+    }
+  },
 });
 
 ReactDOM.render(
