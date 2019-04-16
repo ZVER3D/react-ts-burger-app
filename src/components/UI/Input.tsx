@@ -50,19 +50,17 @@ const Input: React.FC<IProps> = ({
   onChangeHandler,
   elementConfig,
   errMessage,
-}) => {
-  return (
-    <Div>
-      <Label>{label}</Label>
-      <Inp
-        {...elementConfig}
-        onChange={onChangeHandler}
-        value={value}
-        className={invalid ? 'invalid' : ''}
-      />
-      <p style={{ fontSize: '.9rem', color: '#f00' }}>{errMessage}</p>
-    </Div>
-  );
-};
+}) => (
+  <Div>
+    <Label>{label}</Label>
+    <Inp
+      {...elementConfig}
+      onChange={onChangeHandler}
+      value={value}
+      className={invalid ? 'invalid' : ''}
+    />
+    <p style={{ fontSize: '.9rem', color: '#e11' }}>{errMessage}</p>
+  </Div>
+);
 
-export default Input;
+export default React.memo(Input);

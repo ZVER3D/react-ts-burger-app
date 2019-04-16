@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 interface IProps {
-  exact: boolean;
+  exact?: boolean;
   link: string;
 }
 
@@ -49,7 +49,7 @@ const Link = styled(NavLink)`
   }
 `;
 
-const NavigationItem: React.FC<IProps> = ({ exact, link, children }) => {
+const NavigationItem: React.FC<IProps> = ({ exact = false, link, children }) => {
   return (
     <Li>
       <Link exact={exact} to={link} activeClassName="active">

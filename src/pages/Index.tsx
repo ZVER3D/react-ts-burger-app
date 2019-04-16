@@ -1,27 +1,33 @@
-import React, { useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useCallback, useContext, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import Burger from '../components/burger/Burger';
 import BurgerControls from '../components/burger/BurgerControls';
 import OrderSummary from '../components/burger/OrderSummary';
 import Modal from '../components/UI/Modal';
+import { RootContext } from '../store/RootStore';
 
 interface IProps extends RouteComponentProps {}
 
-const Index: React.FC<IProps> = ({ history }) => {
+const Index = observer<IProps>(({ history }) => {
   const [purchasing, setPurchasing] = useState(false);
+  const { user } = useContext(RootContext);
 
-  const startPurchasing = () => {
-    // TODO: check if auth and if not -
+  const startPurchasing = useCallback(() => {
     setPurchasing(true);
-  };
+  }, []);
 
-  const cancelPurchasing = () => {
+  const cancelPurchasing = useCallback(() => {
     setPurchasing(false);
-  };
+  }, []);
 
-  const continuePurchasing = () => {
+  const continuePurchasing = useCallback(() => {
+    if (!user.isAuthenticated) {
+      user.redirect = true;
+      return history.push('/auth');
+    }
     history.push('/checkout');
-  };
+  }, [user.isAuthenticated]);
 
   return (
     <>
@@ -32,6 +38,6 @@ const Index: React.FC<IProps> = ({ history }) => {
       <BurgerControls orderHandler={startPurchasing} />
     </>
   );
-};
+});
 
 export default React.memo(Index);

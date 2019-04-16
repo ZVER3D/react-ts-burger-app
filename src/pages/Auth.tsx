@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext, useState } from 'react';
+import { RouteComponentProps } from 'react-router';
 import styled from 'styled-components/macro';
 import * as yup from 'yup';
 import Button from '../components/UI/Button';
 import Input from '../components/UI/Input';
+import { RootContext } from '../store/RootStore';
 import { useInput } from '../utils/useInput';
 
 const Div = styled.div`
@@ -31,7 +34,11 @@ const schema = yup.object().shape({
     .required(),
 });
 
-const Auth: React.FC = () => {
+interface IProps extends RouteComponentProps {}
+
+const Auth = observer<IProps>(({ history }) => {
+  const { user } = useContext(RootContext);
+
   const [email, onEmailChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
 
@@ -59,7 +66,10 @@ const Auth: React.FC = () => {
     if (!(await checkValidity())) {
       return;
     }
-    console.log('Login logic here...');
+    // TODO: call login mutation
+    if (user.redirect) {
+      history.push('/checkout');
+    }
   };
 
   const registerHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -67,7 +77,10 @@ const Auth: React.FC = () => {
     if (!(await checkValidity())) {
       return;
     }
-    console.log('Register logic here...');
+    // TODO: call register mutation
+    if (user.redirect) {
+      history.push('/checkout');
+    }
   };
 
   return (
@@ -96,6 +109,6 @@ const Auth: React.FC = () => {
       </form>
     </Div>
   );
-};
+});
 
 export default Auth;

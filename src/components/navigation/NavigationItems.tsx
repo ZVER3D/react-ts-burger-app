@@ -24,10 +24,10 @@ const Ul = styled.ul`
 `;
 
 const NavigationItems = observer<IProps>(() => {
-  const { data, loading } = useQuery<MeQuery>(ME_QUERY, { fetchPolicy: 'cache-first' });
+  const { data, loading, error } = useQuery<MeQuery>(ME_QUERY, { fetchPolicy: 'cache-first' });
   const { user } = useContext(RootContext);
 
-  if (!loading && data) {
+  if (!loading && data && !error) {
     const { email, name, deliveryMethod, address } = data.me;
     // TODO: add more info here (history, etc.)
     user.fillUser({ email, name, deliveryMethod, address });
@@ -38,19 +38,13 @@ const NavigationItems = observer<IProps>(() => {
       <NavigationItem link="/" exact>
         Burger Builder
       </NavigationItem>
-      {loading ? null : data ? (
+      {loading ? null : data && !error ? (
         <>
-          <NavigationItem exact={false} link="/orders">
-            Orders
-          </NavigationItem>
-          <NavigationItem exact={false} link="/logout">
-            Logout
-          </NavigationItem>
+          <NavigationItem link="/orders">Orders</NavigationItem>
+          <NavigationItem link="/logout">Logout</NavigationItem>
         </>
       ) : (
-        <NavigationItem exact={false} link="/auth">
-          Authentication
-        </NavigationItem>
+        <NavigationItem link="/auth">Authentication</NavigationItem>
       )}
     </Ul>
   );

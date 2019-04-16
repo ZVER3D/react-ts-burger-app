@@ -5,6 +5,7 @@ export class UserStore {
   @observable name: string = '';
   @observable address: string = '';
   @observable deliveryMethod: string = '';
+  @observable redirect: boolean = false;
 
   @computed get isAuthenticated() {
     return this.email !== '';
@@ -12,7 +13,7 @@ export class UserStore {
 
   @action.bound fillUser({ email, name, address, deliveryMethod }: Partial<UserStore>) {
     this.email = email!;
-    this.name = name!;
+    this.name = name || '';
     this.address = address || '';
     this.deliveryMethod = deliveryMethod || '';
   }

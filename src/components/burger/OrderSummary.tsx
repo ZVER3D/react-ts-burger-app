@@ -9,7 +9,7 @@ interface IProps {
 }
 
 const OrderSummary = observer<IProps>(({ cancelHandler, continueHandler }) => {
-  const { burger } = useContext(RootContext);
+  const { burger, user } = useContext(RootContext);
 
   const ingredientSummary = Object.entries(burger.ingredients).map(([ingr, amount]) => (
     <li key={ingr}>
@@ -27,7 +27,7 @@ const OrderSummary = observer<IProps>(({ cancelHandler, continueHandler }) => {
       </p>
       <p>Continue to Checkout?</p>
       <Button type="success" clickHandler={continueHandler}>
-        CONTINUE
+        {user.isAuthenticated ? 'CONTINUE' : 'LOGIN AND CONTINUE'}
       </Button>
       <Button type="danger" clickHandler={cancelHandler}>
         CANCEL
