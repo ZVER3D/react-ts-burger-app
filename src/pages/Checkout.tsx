@@ -1,22 +1,34 @@
-import React from 'react';
-import { RouteComponentProps } from 'react-router';
+import { observer } from 'mobx-react-lite';
+import React, { useCallback, useContext } from 'react';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 import CheckoutSummary from '../components/checkout/CheckoutSummary';
 import ContactInfo from '../components/checkout/ContactInfo';
+import { RootContext } from '../store/RootStore';
 
 interface IProps extends RouteComponentProps {}
 
-const Checkout: React.FC<IProps> = ({ history }) => {
-  const cancelHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    history.goBack();
-  };
+const Checkout = observer<IProps>(({ history }) => {
+  const { user } = useContext(RootContext);
 
-  return (
-    <>
-      <CheckoutSummary />
-      <ContactInfo mode="checkout" cancelHandler={cancelHandler} />
-    </>
+  const cancelHandler = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+      history.goBack();
+    },
+    [history]
   );
-};
+
+  if (user.isAuthenticated) {
+    return (
+      <>
+        <CheckoutSummary />
+        <ContactInfo mode="checkout" cancelHandler={cancelHandler} />
+      </>
+    );
+  } else {
+    user.redirect = true;
+    return <Redirect to="/auth" />;
+  }
+});
 
 export default Checkout;

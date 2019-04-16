@@ -26,13 +26,13 @@ const Main = styled.div`
 `;
 
 const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
-  const {} = useContext(RootContext);
+  const { user } = useContext(RootContext);
 
   // TODO: get initial vals from user context
-  const [name, setName] = useInput('');
-  const [address, setAddress] = useInput('');
-  const [email, setEmail] = useInput('');
-  const [deliveryMethod, setDeliveryMethod] = useInput('');
+  const [name, setName] = useInput(user.name);
+  const [address, setAddress] = useInput(user.address);
+  const [email, setEmail] = useInput(user.email);
+  const [deliveryMethod, setDeliveryMethod] = useInput(user.deliveryMethod);
 
   const [errors, setErrors] = useState({
     name: '',

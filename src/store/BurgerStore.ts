@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
 import { IngredientType } from '../components/burger/BurgerIngredient';
 
-interface IIngredients {
+export interface IIngredients {
   [x: string]: number;
 }
 

@@ -91,7 +91,7 @@ const Seed2 = styled.div`
 
 const Meat = styled.div`
   width: 80%;
-  height: 8%;
+  height: 10%;
   background: linear-gradient(#7f3608, #702e05);
   margin: 2% auto;
   border-radius: 15px;
@@ -107,7 +107,7 @@ const Cheese = styled.div`
 
 const Salad = styled.div`
   width: 85%;
-  height: 7%;
+  height: 5%;
   margin: 2% auto;
   background: linear-gradient(#228c1d, #91ce50);
   border-radius: 20px;
@@ -118,6 +118,7 @@ const Bacon = styled.div`
   height: 3%;
   background: linear-gradient(#bf3813, #c45e38);
   margin: 2% auto;
+  border-radius: 2px;
 `;
 
 const BurgerIngredient: React.FC<IProps> = ({ type }) => {
