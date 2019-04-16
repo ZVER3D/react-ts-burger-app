@@ -24,7 +24,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "gen-types": "graphql-codegen --config codegen.yml"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -36,6 +37,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.0.7",
     "@types/react-router-dom": "^4.3.2",
     "@types/styled-components": "^4.1.14",
     "@types/yup": "^0.26.12",
@@ -43,6 +45,8 @@
     "tslint": "^5.15.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.0.0",
-    "tslint-react-hooks": "^2.0.0"
+    "tslint-react-hooks": "^2.0.0",
+    "@graphql-codegen/typescript": "1.0.7",
+    "@graphql-codegen/typescript-operations": "1.0.7"
   }
 }

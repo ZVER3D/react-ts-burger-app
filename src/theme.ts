@@ -11,5 +11,15 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     scroll-behavior: smooth;
+    background-color: rgb(255, 254, 252);
+  }
+
+  a {
+    color: #0d0d0d;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 `;

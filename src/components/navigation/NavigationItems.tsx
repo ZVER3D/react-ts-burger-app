@@ -1,5 +1,10 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
+import { useQuery } from 'react-apollo-hooks';
 import styled from 'styled-components/macro';
+import { MeQuery } from '../../generated/graphql';
+import { meQuery } from '../../graphql/user/queries/me';
+import { RootContext } from '../../store/RootStore';
 import NavigationItem from './NavigationItem';
 
 interface IProps {}
@@ -18,13 +23,20 @@ const Ul = styled.ul`
   }
 `;
 
-const NavigationItems: React.FC<IProps> = () => {
+const NavigationItems = observer<IProps>(() => {
+  const { data, loading } = useQuery<MeQuery>(meQuery);
+  const {} = useContext(RootContext);
+
+  if (!loading && data) {
+    // TODO: fill in data into user store
+  }
+
   return (
     <Ul>
       <NavigationItem link="/" exact>
         Burger Builder
       </NavigationItem>
-      {true /** TODO: check auth */ ? (
+      {loading ? null : data ? (
         <>
           <NavigationItem exact={false} link="/orders">
             Orders
@@ -35,11 +47,11 @@ const NavigationItems: React.FC<IProps> = () => {
         </>
       ) : (
         <NavigationItem exact={false} link="/auth">
-          Auth
+          Authentication
         </NavigationItem>
       )}
     </Ul>
   );
-};
+});
 
 export default NavigationItems;
