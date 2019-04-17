@@ -4,6 +4,7 @@ import styled from 'styled-components/macro';
 interface IProps {
   price: number;
   ingredients: Array<{ name: string; amount: number }>;
+  date: Date;
 }
 
 export const OrderStyle = styled.div`
@@ -23,18 +24,23 @@ const Ingredient = styled.span`
   padding: 5px;
 `;
 
-const Order: React.FC<IProps> = ({ price, ingredients }) => {
+const Order: React.FC<IProps> = ({ price, ingredients, date }) => {
   const ings = ingredients.map(({ name, amount }) => (
     <Ingredient key={name}>
       {name} ({amount})
     </Ingredient>
   ));
 
+  const formated = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+
   return (
     <OrderStyle>
       <p>Ingredients: {ings}</p>
       <p>
         Price: <strong>USD {price.toFixed(2)}</strong>
+      </p>
+      <p>
+        Order Date: <strong>{formated}</strong>
       </p>
     </OrderStyle>
   );

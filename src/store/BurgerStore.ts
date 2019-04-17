@@ -14,10 +14,10 @@ export class BurgerStore {
   };
 
   prices: IIngredients = {
-    salad: 0.5,
-    bacon: 1,
-    cheese: 1,
-    meat: 2,
+    salad: 0,
+    bacon: 0,
+    cheese: 0,
+    meat: 0,
   };
 
   @computed get totalPrice() {

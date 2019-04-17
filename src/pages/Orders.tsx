@@ -1,25 +1,22 @@
-import { observer } from 'mobx-react-lite';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useQuery } from 'react-apollo-hooks';
 import { Redirect } from 'react-router';
 import Order, { OrderStyle } from '../components/Order';
 import Spinner from '../components/UI/Spinner';
 import { OrdersQuery } from '../generated/graphql';
 import { ORDERS_QUERY } from '../graphql/queries/orders';
-import { RootContext } from '../store/RootStore';
 
 interface IProps {}
 
-const Orders = observer<IProps>(() => {
-  const { user } = useContext(RootContext);
+const Orders: React.FC<IProps> = () => {
   const { data, error, loading } = useQuery<OrdersQuery>(ORDERS_QUERY);
 
-  if (!user.isAuthenticated) {
-    return <Redirect to="/auth" />;
+  if (loading) {
+    return <Spinner />;
   }
 
-  if (loading || error) {
-    return <Spinner />;
+  if (error) {
+    return <Redirect to="/auth" />;
   }
 
   if (!data || !data.orders) {
@@ -33,10 +30,15 @@ const Orders = observer<IProps>(() => {
   return (
     <>
       {data.orders.map(order => (
-        <Order key={order.id} ingredients={order.ingredients} price={order.price} />
+        <Order
+          key={order.id}
+          ingredients={order.ingredients}
+          price={order.price}
+          date={new Date(order.date)}
+        />
       ))}
     </>
   );
-});
+};
 
-export default Orders;
+export default React.memo(Orders);
