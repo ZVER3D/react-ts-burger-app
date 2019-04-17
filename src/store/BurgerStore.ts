@@ -31,6 +31,10 @@ export class BurgerStore {
     return this.totalPrice > 0;
   }
 
+  @action.bound fillPrices(prices: IIngredients) {
+    this.prices = prices;
+  }
+
   @action.bound addIngredient(ingr: IngredientType) {
     this.ingredients[ingr]++;
   }

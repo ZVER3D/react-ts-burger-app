@@ -12,12 +12,11 @@ interface IProps {}
 
 const Orders = observer<IProps>(() => {
   const { user } = useContext(RootContext);
+  const { data, error, loading } = useQuery<OrdersQuery>(ORDERS_QUERY);
 
   if (!user.isAuthenticated) {
     return <Redirect to="/auth" />;
   }
-
-  const { data, error, loading } = useQuery<OrdersQuery>(ORDERS_QUERY);
 
   if (loading || error) {
     return <Spinner />;
