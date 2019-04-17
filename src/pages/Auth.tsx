@@ -1,10 +1,19 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react';
-import { RouteComponentProps } from 'react-router';
+import { useMutation } from 'react-apollo-hooks';
+import { Redirect, RouteComponentProps } from 'react-router';
 import styled from 'styled-components/macro';
 import * as yup from 'yup';
 import Button from '../components/UI/Button';
 import Input from '../components/UI/Input';
+import {
+  LoginMutation,
+  LoginMutationVariables,
+  RegisterMutation,
+  RegisterMutationVariables,
+} from '../generated/graphql';
+import { LOGIN_MUTATION } from '../graphql/mutations/login';
+import { REGISTER_MUTATION } from '../graphql/mutations/register';
 import { RootContext } from '../store/RootStore';
 import { useInput } from '../utils/useInput';
 
@@ -39,8 +48,18 @@ interface IProps extends RouteComponentProps {}
 const Auth = observer<IProps>(({ history }) => {
   const { user } = useContext(RootContext);
 
+  const [loginError, setLoginError] = useState('');
+  const [registerError, setRegisterError] = useState('');
+
   const [email, onEmailChange] = useInput('');
   const [password, onPasswordChange] = useInput('');
+
+  const login = useMutation<LoginMutation, LoginMutationVariables>(LOGIN_MUTATION, {
+    errorPolicy: 'all',
+  });
+  const register = useMutation<RegisterMutation, RegisterMutationVariables>(REGISTER_MUTATION, {
+    errorPolicy: 'all',
+  });
 
   const [emailValid, setEmailValid] = useState('');
   const [passwordValid, setPasswordlValid] = useState('');
@@ -66,7 +85,16 @@ const Auth = observer<IProps>(({ history }) => {
     if (!(await checkValidity())) {
       return;
     }
-    // TODO: call login mutation
+    const res = await login({ variables: { email, password } });
+    if (res.error || !res.data || !res.data.login) {
+      return setLoginError('Invalid email/password.');
+    }
+    user.fillUser({
+      email: res.data.login.email,
+      name: res.data.login.name,
+      address: res.data.login.address,
+      deliveryMethod: res.data.login.address,
+    });
     if (user.redirect) {
       user.redirect = false;
       history.push('/checkout');
@@ -78,12 +106,24 @@ const Auth = observer<IProps>(({ history }) => {
     if (!(await checkValidity())) {
       return;
     }
-    // TODO: call register mutation
+    const res = await register({ variables: { email, password } });
+    if (res.error || !res.data || !res.data.login) {
+      return setRegisterError('User with that email already exists.');
+    }
+    user.fillUser({
+      email: res.data.register.email,
+    });
     if (user.redirect) {
       user.redirect = false;
       history.push('/checkout');
     }
   };
+
+  if (user.isAuthenticated) {
+    return <Redirect to="/" />;
+  }
+
+  // TODO: make password field a password field
 
   return (
     <Div>
