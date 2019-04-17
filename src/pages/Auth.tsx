@@ -31,6 +31,16 @@ const Div = styled.div`
   }
 `;
 
+const P = styled.p`
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #dd0044;
+  box-sizing: border-box;
+  text-align: center;
+  color: white;
+`;
+
 const schema = yup.object().shape({
   password: yup
     .string()
@@ -82,6 +92,8 @@ const Auth = observer<IProps>(({ history }) => {
 
   const loginHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    setLoginError('');
+    setRegisterError('');
     if (!(await checkValidity())) {
       return;
     }
@@ -103,6 +115,8 @@ const Auth = observer<IProps>(({ history }) => {
 
   const registerHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    setLoginError('');
+    setRegisterError('');
     if (!(await checkValidity())) {
       return;
     }
@@ -123,10 +137,10 @@ const Auth = observer<IProps>(({ history }) => {
     return <Redirect to="/" />;
   }
 
-  // TODO: make password field a password field
-
   return (
     <Div>
+      {loginError && <P>{loginError}</P>}
+      {registerError && <P>{registerError}</P>}
       <form>
         <Input
           value={email}
@@ -140,6 +154,7 @@ const Auth = observer<IProps>(({ history }) => {
           invalid={passwordValid !== ''}
           errMessage={passwordValid}
           onChangeHandler={onPasswordChange}
+          elementConfig={{ type: 'password' }}
           label="Password"
         />
         <Button type="success" clickHandler={loginHandler}>

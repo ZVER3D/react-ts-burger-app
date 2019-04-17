@@ -17,4 +17,11 @@ export class UserStore {
     this.address = address || '';
     this.deliveryMethod = deliveryMethod || '';
   }
+
+  @action.bound logoutUser() {
+    this.email = '';
+    this.name = '';
+    this.address = '';
+    this.deliveryMethod = '';
+  }
 }

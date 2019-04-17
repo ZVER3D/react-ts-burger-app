@@ -1,17 +1,26 @@
-import React, { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext, useEffect } from 'react';
+import { useMutation } from 'react-apollo-hooks';
 import { Redirect } from 'react-router-dom';
+import { LogoutMutation } from '../generated/graphql';
+import { LOGOUT_MUTATION } from '../graphql/mutations/logout';
+import { RootContext } from '../store/RootStore';
 
 interface IProps {}
 
-const Logout: React.FC<IProps> = () => {
+const Logout = observer<IProps>(() => {
+  const logout = useMutation<LogoutMutation>(LOGOUT_MUTATION);
+  const { user } = useContext(RootContext);
+
   useEffect(() => {
-    const logout = async () => {
-      // Logic to logout
+    const executeLogout = async () => {
+      user.logoutUser();
+      await logout();
     };
-    logout();
+    executeLogout();
   }, []);
 
   return <Redirect to="/" />;
-};
+});
 
 export default Logout;
