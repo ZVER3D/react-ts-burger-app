@@ -66,7 +66,6 @@ export type Query = {
 };
 
 export type RegisterInput = {
-  name: Scalars["String"];
   email: Scalars["String"];
   password: Scalars["String"];
 };
@@ -79,6 +78,40 @@ export type User = {
   deliveryMethod: Scalars["String"];
   orders: Array<Order>;
 };
+export type LoginMutationVariables = {
+  email: Scalars["String"];
+  password: Scalars["String"];
+};
+
+export type LoginMutation = { __typename?: "Mutation" } & {
+  login: { __typename?: "User" } & Pick<User, "email" | "name">;
+};
+
+export type LogoutMutationVariables = {};
+
+export type LogoutMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "logout"
+>;
+
+export type OrderMutationVariables = {
+  ingredients?: Maybe<Array<Ing>>;
+};
+
+export type OrderMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "order"
+>;
+
+export type RegisterMutationVariables = {
+  email: Scalars["String"];
+  password: Scalars["String"];
+};
+
+export type RegisterMutation = { __typename?: "Mutation" } & {
+  register: { __typename?: "User" } & Pick<User, "email" | "name">;
+};
+
 export type GetPricesQueryVariables = {};
 
 export type GetPricesQuery = { __typename?: "Query" } & {
