@@ -45,8 +45,4 @@ export class BurgerStore {
     }
     this.ingredients[ingr]--;
   }
-
-  @action.bound purchase() {
-    console.log('Purchased');
-  }
 }

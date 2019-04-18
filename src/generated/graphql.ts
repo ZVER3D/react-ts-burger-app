@@ -10,12 +10,12 @@ export type Scalars = {
   DateTime: any;
 };
 
-export type Ing = {
+export type Ingredient = {
   name: Scalars["String"];
   amount: Scalars["Int"];
 };
 
-export type Ingredient = {
+export type IngredientInput = {
   name: Scalars["String"];
   amount: Scalars["Int"];
 };
@@ -33,7 +33,7 @@ export type Mutation = {
 };
 
 export type MutationOrderArgs = {
-  ingredients?: Maybe<Array<Ing>>;
+  data: OrderInput;
 };
 
 export type MutationLoginArgs = {
@@ -46,10 +46,20 @@ export type MutationRegisterArgs = {
 
 export type Order = {
   id: Scalars["ID"];
-  date?: Maybe<Scalars["DateTime"]>;
+  date: Scalars["DateTime"];
   price: Scalars["Int"];
+  address: Scalars["String"];
+  phone: Scalars["String"];
+  deliveryMethod: Scalars["String"];
   user: User;
   ingredients: Array<Ingredient>;
+};
+
+export type OrderInput = {
+  ingredients: Array<IngredientInput>;
+  address: Scalars["String"];
+  phone: Scalars["String"];
+  deliveryMethod: Scalars["String"];
 };
 
 export type Price = {
@@ -76,6 +86,7 @@ export type User = {
   email: Scalars["String"];
   address: Scalars["String"];
   deliveryMethod: Scalars["String"];
+  phone: Scalars["String"];
   orders: Array<Order>;
 };
 export type LoginMutationVariables = {
@@ -84,7 +95,10 @@ export type LoginMutationVariables = {
 };
 
 export type LoginMutation = { __typename?: "Mutation" } & {
-  login: { __typename?: "User" } & Pick<User, "email" | "name">;
+  login: { __typename?: "User" } & Pick<
+    User,
+    "email" | "name" | "address" | "deliveryMethod" | "phone"
+  >;
 };
 
 export type LogoutMutationVariables = {};
@@ -95,7 +109,10 @@ export type LogoutMutation = { __typename?: "Mutation" } & Pick<
 >;
 
 export type OrderMutationVariables = {
-  ingredients?: Maybe<Array<Ing>>;
+  ingredients: Array<IngredientInput>;
+  address: Scalars["String"];
+  phone: Scalars["String"];
+  deliveryMethod: Scalars["String"];
 };
 
 export type OrderMutation = { __typename?: "Mutation" } & Pick<
@@ -109,7 +126,10 @@ export type RegisterMutationVariables = {
 };
 
 export type RegisterMutation = { __typename?: "Mutation" } & {
-  register: { __typename?: "User" } & Pick<User, "email" | "name">;
+  register: { __typename?: "User" } & Pick<
+    User,
+    "email" | "name" | "deliveryMethod"
+  >;
 };
 
 export type GetPricesQueryVariables = {};
@@ -126,7 +146,7 @@ export type MeQueryVariables = {};
 export type MeQuery = { __typename?: "Query" } & {
   me: { __typename?: "User" } & Pick<
     User,
-    "id" | "email" | "name" | "address" | "deliveryMethod"
+    "email" | "name" | "address" | "deliveryMethod" | "phone"
   >;
 };
 

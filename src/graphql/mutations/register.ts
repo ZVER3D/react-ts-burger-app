@@ -5,6 +5,7 @@ export const REGISTER_MUTATION = gql`
     register(data: { email: $email, password: $password }) {
       email
       name
+      deliveryMethod
     }
   }
 `;

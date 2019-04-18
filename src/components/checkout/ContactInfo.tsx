@@ -1,6 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react';
+import { useMutation } from 'react-apollo-hooks';
 import styled from 'styled-components/macro';
+import { OrderMutation, OrderMutationVariables } from '../../generated/graphql';
+import { ORDER_MUTATION } from '../../graphql/mutations/order';
 import { RootContext } from '../../store/RootStore';
 import { useInput } from '../../utils/useInput';
 import Button from '../UI/Button';
@@ -28,10 +31,13 @@ const Main = styled.div`
 const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
   const { user } = useContext(RootContext);
 
-  // TODO: get initial vals from user context
+  const order = useMutation<OrderMutation, OrderMutationVariables>(ORDER_MUTATION, {
+    errorPolicy: 'all',
+  });
+
   const [name, setName] = useInput(user.name);
   const [address, setAddress] = useInput(user.address);
-  const [email, setEmail] = useInput(user.email);
+  const [phone, setPhone] = useInput(user.phone);
   const [deliveryMethod, setDeliveryMethod] = useInput(user.deliveryMethod);
 
   const [errors, setErrors] = useState({
@@ -42,12 +48,22 @@ const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
   });
 
   const isFormValid = () => {
-    return Object.values(errors).filter(e => e !== '').length === 0;
+    return !Object.values(errors).some(e => e !== '');
   };
 
-  const orderHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const orderHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    console.log('ODERED');
+    // TODO: sort out address, and delivery method name and email info stuff
+    await order({
+      variables: {
+        address,
+        deliveryMethod,
+        phone,
+        ingredients: [
+          /* TODO: add stuff */
+        ],
+      },
+    });
   };
 
   return (
@@ -55,7 +71,7 @@ const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
       <h4>Enter Your Contact Data</h4>
       <form>
         <Input label="Your Name" value={name} onChangeHandler={setName} />
-        <Input label="Email" value={email} onChangeHandler={setEmail} />
+        <Input label="Phone Number" value={phone} onChangeHandler={setPhone} />
         <Input label="Address" value={address} onChangeHandler={setAddress} />
         {/** TODO: Add choise of delivery method */}
         {mode === 'checkout' ? (
