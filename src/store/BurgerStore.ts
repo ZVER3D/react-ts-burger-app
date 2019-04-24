@@ -45,4 +45,13 @@ export class BurgerStore {
     }
     this.ingredients[ingr]--;
   }
+
+  @action.bound clearIngredients() {
+    this.ingredients = {
+      salad: 0,
+      bacon: 0,
+      cheese: 0,
+      meat: 0,
+    };
+  }
 }

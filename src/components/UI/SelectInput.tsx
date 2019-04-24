@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FocusEventHandler } from 'react';
 import Select from 'react-select';
 import { ValueType } from 'react-select/lib/types';
 import styled from 'styled-components/macro';
@@ -23,24 +23,17 @@ export interface IDeliveryMethod {
 interface IProps {
   options: IDeliveryMethod[];
   label: string;
-  invalid?: boolean;
-  errMessage?: string;
+  errMessage?: string | null;
   value: ValueType<IDeliveryMethod>;
   onChange: (option: ValueType<IDeliveryMethod>) => void;
+  onBlur?: FocusEventHandler;
 }
 
-const SelectInput: React.FC<IProps> = ({
-  label,
-  invalid,
-  value,
-  onChange,
-  errMessage,
-  options,
-}) => (
+const SelectInput: React.FC<IProps> = ({ label, value, onChange, onBlur, errMessage, options }) => (
   <Div>
     <Label>{label}</Label>
-    <Select onChange={onChange} options={options} value={value} />
-    <p style={{ fontSize: '.9rem', color: '#e11' }}>{errMessage}</p>
+    <Select onBlur={onBlur} onChange={onChange} options={options} value={value} />
+    {errMessage && <p style={{ fontSize: '.9rem', color: '#e11' }}>{errMessage}</p>}
   </Div>
 );
 

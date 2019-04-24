@@ -7,12 +7,7 @@ import * as yup from 'yup';
 import Button from '../components/UI/Button';
 import { Error } from '../components/UI/Error';
 import Input from '../components/UI/Input';
-import {
-  LoginMutation,
-  LoginMutationVariables,
-  RegisterMutation,
-  RegisterMutationVariables,
-} from '../generated/graphql';
+import { LoginMutationVariables, RegisterMutationVariables } from '../generated/graphql';
 import { LOGIN_MUTATION } from '../graphql/mutations/login';
 import { REGISTER_MUTATION } from '../graphql/mutations/register';
 import { RootContext } from '../store/RootStore';
@@ -32,72 +27,57 @@ const Div = styled.div`
   }
 `;
 
-const schema = yup.object().shape({
-  password: yup
-    .string()
-    .min(6)
-    .max(75)
-    .required(),
-  email: yup
-    .string()
-    .email()
-    .required(),
-});
+const emailSchema = yup
+  .string()
+  .email()
+  .required();
+const passwordSchema = yup
+  .string()
+  .min(6)
+  .max(75)
+  .required();
 
 interface IProps extends RouteComponentProps {}
 
 const Auth = observer<IProps>(({ history }) => {
   const { user } = useContext(RootContext);
 
-  const [loginError, setLoginError] = useState('');
-  const [registerError, setRegisterError] = useState('');
+  const [serverError, setServerError] = useState<string | null>(null);
 
-  const [email, onEmailChange] = useInput('');
-  const [password, onPasswordChange] = useInput('');
+  const email = useInput('', emailSchema);
+  const password = useInput('', passwordSchema);
 
-  const login = useMutation<LoginMutation, LoginMutationVariables>(LOGIN_MUTATION, {
+  const login = useMutation<any, LoginMutationVariables>(LOGIN_MUTATION, {
     errorPolicy: 'all',
   });
-  const register = useMutation<RegisterMutation, RegisterMutationVariables>(REGISTER_MUTATION, {
+  const register = useMutation<any, RegisterMutationVariables>(REGISTER_MUTATION, {
     errorPolicy: 'all',
   });
-
-  const [emailValid, setEmailValid] = useState('');
-  const [passwordValid, setPasswordlValid] = useState('');
-
-  const checkValidity = async () => {
-    try {
-      await schema.validate({ email, password }, { abortEarly: true });
-      return true;
-    } catch (res) {
-      setEmailValid('');
-      setPasswordlValid('');
-      if (res.path === 'email') {
-        setEmailValid(res.message);
-      } else {
-        setPasswordlValid(res.message);
-      }
-      return false;
-    }
-  };
 
   const loginHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    setLoginError('');
-    setRegisterError('');
-    if (!(await checkValidity())) {
+    setServerError(null);
+
+    // Check validity
+    await email.validate();
+    await password.validate();
+    if (email.error || password.error) {
       return;
     }
-    const res = await login({ variables: { email, password } });
+
+    const res = await login({ variables: { email: email.value, password: password.value } });
+
     if (res.error || !res.data || !res.data.login) {
-      return setLoginError('Invalid email/password.');
+      return setServerError('Invalid email/password.');
     }
+
     user.fillUser({
       email: res.data.login.email,
       name: res.data.login.name,
       address: res.data.login.address,
       deliveryMethod: res.data.login.address,
     });
+
     if (user.redirect) {
       user.redirect = false;
       history.push('/checkout');
@@ -106,18 +86,17 @@ const Auth = observer<IProps>(({ history }) => {
 
   const registerHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    setLoginError('');
-    setRegisterError('');
-    if (!(await checkValidity())) {
-      return;
+    setServerError(null);
+
+    const res = await register({ variables: { email: email.value, password: password.value } });
+    if (res.error || !res.data || !res.data.register) {
+      return setServerError('User with that email already exists.');
     }
-    const res = await register({ variables: { email, password } });
-    if (res.error || !res.data || !res.data.login) {
-      return setRegisterError('User with that email already exists.');
-    }
+
     user.fillUser({
       email: res.data.register.email,
     });
+
     if (user.redirect) {
       user.redirect = false;
       history.push('/checkout');
@@ -130,21 +109,20 @@ const Auth = observer<IProps>(({ history }) => {
 
   return (
     <Div>
-      {loginError && <Error>{loginError}</Error>}
-      {registerError && <Error>{registerError}</Error>}
+      {serverError && <Error>{serverError}</Error>}
       <form>
         <Input
-          value={email}
-          invalid={emailValid !== ''}
-          errMessage={emailValid}
-          onChangeHandler={onEmailChange}
+          value={email.value}
+          errMessage={email.error}
+          onChange={email.onChange}
+          onBlur={email.validate}
           label="Email"
         />
         <Input
-          value={password}
-          invalid={passwordValid !== ''}
-          errMessage={passwordValid}
-          onChangeHandler={onPasswordChange}
+          value={password.value}
+          errMessage={password.error}
+          onChange={password.onChange}
+          onBlur={password.validate}
           elementConfig={{ type: 'password' }}
           label="Password"
         />

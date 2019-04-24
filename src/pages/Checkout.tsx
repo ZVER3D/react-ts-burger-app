@@ -8,7 +8,7 @@ import { RootContext } from '../store/RootStore';
 interface IProps extends RouteComponentProps {}
 
 const Checkout = observer<IProps>(({ history }) => {
-  const { user } = useContext(RootContext);
+  const { user, burger } = useContext(RootContext);
 
   const cancelHandler = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -18,7 +18,7 @@ const Checkout = observer<IProps>(({ history }) => {
     [history]
   );
 
-  if (user.isAuthenticated) {
+  if (user.isAuthenticated && burger.purchasable) {
     return (
       <>
         <CheckoutSummary />

@@ -36,30 +36,24 @@ const Inp = styled.input`
 
 interface IProps {
   label: string;
-  invalid?: boolean;
-  errMessage?: string;
+  errMessage?: string | null;
   value: string;
-  onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   elementConfig?: React.InputHTMLAttributes<HTMLInputElement>;
 }
 
-const Input: React.FC<IProps> = ({
-  label,
-  invalid,
-  value,
-  onChangeHandler,
-  elementConfig,
-  errMessage,
-}) => (
+const Input: React.FC<IProps> = ({ label, value, onChange, onBlur, elementConfig, errMessage }) => (
   <Div>
     <Label>{label}</Label>
     <Inp
       {...elementConfig}
-      onChange={onChangeHandler}
+      onBlur={onBlur}
+      onChange={onChange}
       value={value}
-      className={invalid ? 'invalid' : ''}
+      className={errMessage ? 'invalid' : ''}
     />
-    <p style={{ fontSize: '.9rem', color: '#e11' }}>{errMessage}</p>
+    {errMessage && <p style={{ fontSize: '.9rem', color: '#e11' }}>{errMessage}</p>}
   </Div>
 );
 

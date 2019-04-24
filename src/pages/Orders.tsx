@@ -6,9 +6,7 @@ import Spinner from '../components/UI/Spinner';
 import { OrdersQuery } from '../generated/graphql';
 import { ORDERS_QUERY } from '../graphql/queries/orders';
 
-interface IProps {}
-
-const Orders: React.FC<IProps> = () => {
+const Orders: React.FC = () => {
   const { data, error, loading } = useQuery<OrdersQuery>(ORDERS_QUERY);
 
   if (loading) {
@@ -19,7 +17,7 @@ const Orders: React.FC<IProps> = () => {
     return <Redirect to="/auth" />;
   }
 
-  if (!data || !data.orders) {
+  if (!data || !data.orders || data.orders.length === 0) {
     return (
       <OrderStyle>
         <p>You didn't order anything yet.</p>
