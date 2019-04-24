@@ -5,6 +5,7 @@ import { Redirect, RouteComponentProps } from 'react-router';
 import styled from 'styled-components/macro';
 import * as yup from 'yup';
 import Button from '../components/UI/Button';
+import { Error } from '../components/UI/Error';
 import Input from '../components/UI/Input';
 import {
   LoginMutation,
@@ -29,16 +30,6 @@ const Div = styled.div`
   @media (min-width: 600px) {
     width: 500px;
   }
-`;
-
-const P = styled.p`
-  margin: 10px auto;
-  padding: 10px;
-  border-radius: 4px;
-  background-color: #dd0044;
-  box-sizing: border-box;
-  text-align: center;
-  color: white;
 `;
 
 const schema = yup.object().shape({
@@ -139,8 +130,8 @@ const Auth = observer<IProps>(({ history }) => {
 
   return (
     <Div>
-      {loginError && <P>{loginError}</P>}
-      {registerError && <P>{registerError}</P>}
+      {loginError && <Error>{loginError}</Error>}
+      {registerError && <Error>{registerError}</Error>}
       <form>
         <Input
           value={email}

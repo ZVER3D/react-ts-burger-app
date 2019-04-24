@@ -7,7 +7,9 @@ import { ORDER_MUTATION } from '../../graphql/mutations/order';
 import { RootContext } from '../../store/RootStore';
 import { useInput } from '../../utils/useInput';
 import Button from '../UI/Button';
+import { Error } from '../UI/Error';
 import Input from '../UI/Input';
+import SelectInput, { IDeliveryMethod } from '../UI/SelectInput';
 
 interface IProps {
   cancelHandler?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -29,7 +31,7 @@ const Main = styled.div`
 `;
 
 const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
-  const { user } = useContext(RootContext);
+  const { user, burger } = useContext(RootContext);
 
   const order = useMutation<OrderMutation, OrderMutationVariables>(ORDER_MUTATION, {
     errorPolicy: 'all',
@@ -38,14 +40,22 @@ const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
   const [name, setName] = useInput(user.name);
   const [address, setAddress] = useInput(user.address);
   const [phone, setPhone] = useInput(user.phone);
-  const [deliveryMethod, setDeliveryMethod] = useInput(user.deliveryMethod);
+
+  const [deliveryMethod, setDeliveryMethod] = useState<IDeliveryMethod | null>(null);
+
+  const changeDeliveryMethod = (option: any) => {
+    setDeliveryMethod(option);
+    console.log(deliveryMethod);
+  };
 
   const [errors, setErrors] = useState({
     name: '',
     address: '',
-    email: '',
+    phone: '',
     deliveryMethod: '',
   });
+
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const isFormValid = () => {
     return !Object.values(errors).some(e => e !== '');
@@ -53,27 +63,44 @@ const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
 
   const orderHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    // TODO: sort out address, and delivery method name and email info stuff
-    await order({
-      variables: {
-        address,
-        deliveryMethod,
-        phone,
-        ingredients: [
-          /* TODO: add stuff */
-        ],
-      },
-    });
+    setServerError(null);
+    try {
+      const res = await order({
+        variables: {
+          address,
+          deliveryMethod: deliveryMethod!.value,
+          phone,
+          ingredients: Object.entries(burger.ingredients).map(([ingName, amount]) => ({
+            name: ingName,
+            amount,
+          })),
+        },
+      });
+      if (res.error && !res.loading) {
+        setServerError('Sent incorrect data');
+      }
+    } catch {
+      setServerError('Sent incorrect data');
+    }
   };
 
   return (
     <Main>
       <h4>Enter Your Contact Data</h4>
       <form>
+        {serverError && <Error>{serverError}</Error>}
         <Input label="Your Name" value={name} onChangeHandler={setName} />
         <Input label="Phone Number" value={phone} onChangeHandler={setPhone} />
         <Input label="Address" value={address} onChangeHandler={setAddress} />
-        {/** TODO: Add choise of delivery method */}
+        <SelectInput
+          options={[
+            { value: 'courier', label: 'Courier' },
+            { value: 'take out', label: 'Take Out' },
+          ]}
+          label="Delivery Method"
+          value={deliveryMethod}
+          onChange={changeDeliveryMethod}
+        />
         {mode === 'checkout' ? (
           <>
             <p>

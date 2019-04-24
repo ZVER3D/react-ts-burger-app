@@ -16,6 +16,7 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
+    "react-select": "^2.4.3",
     "styled-components": "^4.2.0",
     "typescript": "3.4.3",
     "yup": "^0.27.0"
@@ -38,15 +39,16 @@
   ],
   "devDependencies": {
     "@graphql-codegen/cli": "^1.0.7",
+    "@graphql-codegen/typescript": "1.0.7",
+    "@graphql-codegen/typescript-operations": "1.0.7",
     "@types/react-router-dom": "^4.3.2",
+    "@types/react-select": "^2.0.17",
     "@types/styled-components": "^4.1.14",
     "@types/yup": "^0.26.12",
     "babel-plugin-macros": "^2.5.1",
     "tslint": "^5.15.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.0.0",
-    "tslint-react-hooks": "^2.0.0",
-    "@graphql-codegen/typescript": "1.0.7",
-    "@graphql-codegen/typescript-operations": "1.0.7"
+    "tslint-react-hooks": "^2.0.0"
   }
 }
