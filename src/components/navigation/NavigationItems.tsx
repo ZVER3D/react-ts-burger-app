@@ -31,6 +31,7 @@ const NavigationItems = observer<IProps>(() => {
       {user.isAuthenticated ? (
         <>
           <NavigationItem link="/orders">Orders</NavigationItem>
+          <NavigationItem link="/edit-profile">Edit Profile</NavigationItem>
           <NavigationItem link="/logout">Logout</NavigationItem>
         </>
       ) : (

@@ -3,7 +3,8 @@ import React, { useContext, useState } from 'react';
 import { useMutation } from 'react-apollo-hooks';
 import styled from 'styled-components/macro';
 import * as yup from 'yup';
-import { OrderMutationVariables } from '../../generated/graphql';
+import { EditUserMutationVariables, OrderMutationVariables } from '../../generated/graphql';
+import { EDIT_USER_MUTATION } from '../../graphql/mutations/editUser';
 import { ORDER_MUTATION } from '../../graphql/mutations/order';
 import { RootContext } from '../../store/RootStore';
 import { useInput } from '../../utils/useInput';
@@ -60,12 +61,54 @@ const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
     errorPolicy: 'all',
   });
 
+  const editUser = useMutation<any, EditUserMutationVariables>(EDIT_USER_MUTATION, {
+    errorPolicy: 'all',
+  });
+
   const name = useInput(user.name, nameSchema);
   const address = useInput(user.address, addressSchema);
   const phone = useInput(user.phone, phoneSchema);
   const deliveryMethod = useSelect(null, deliveryMethodSchema);
 
   const [serverError, setServerError] = useState<string | null>(null);
+
+  const editHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    try {
+      e.preventDefault();
+      setServerError(null);
+
+      // Validate fields
+      await name.validate();
+      await address.validate();
+      await phone.validate();
+      await deliveryMethod.validate();
+      if (name.error || address.error || phone.error || deliveryMethod.error) {
+        return;
+      }
+
+      const res = await editUser({
+        variables: {
+          address: address.value,
+          phone: phone.value,
+          deliveryMethod: deliveryMethod.value!.value,
+          name: name.value,
+        },
+      });
+
+      if (res.error || !res.data || !res.data.editUser) {
+        return setServerError('Sent incorrect data');
+      }
+
+      user.fillUser({
+        address: address.value,
+        phone: phone.value,
+        deliveryMethod: deliveryMethod.value!.value,
+        name: name.value,
+      });
+    } catch (err) {
+      setServerError('Sent incorrect data');
+    }
+  };
 
   const orderHandler = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     try {
@@ -86,6 +129,7 @@ const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
           address: address.value,
           phone: phone.value,
           deliveryMethod: deliveryMethod.value!.value,
+          name: name.value,
           ingredients: Object.entries(burger.ingredients).map(([ingName, amount]) => ({
             name: ingName,
             amount,
@@ -94,7 +138,6 @@ const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
       });
 
       if (res.error || !res.data || !res.data.order) {
-        console.log(res);
         return setServerError('Sent incorrect data');
       }
 
@@ -154,7 +197,11 @@ const ContactInfo = observer<IProps>(({ cancelHandler, mode }) => {
               CANCEL
             </Button>
           </>
-        ) : null /** TODO: add edit profile buttons here */}
+        ) : (
+          <Button clickHandler={editHandler} type="success">
+            SAVE CHANGES
+          </Button>
+        )}
       </form>
     </Main>
   );

@@ -6,6 +6,7 @@ export const ORDER_MUTATION = gql`
     $address: String!
     $phone: String!
     $deliveryMethod: String!
+    $name: String!
   ) {
     order(
       data: {
@@ -13,6 +14,7 @@ export const ORDER_MUTATION = gql`
         address: $address
         phone: $phone
         deliveryMethod: $deliveryMethod
+        name: $name
       }
     )
   }

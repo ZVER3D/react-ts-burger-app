@@ -10,6 +10,13 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type EditUserInput = {
+  name: Scalars["String"];
+  address: Scalars["String"];
+  phone: Scalars["String"];
+  deliveryMethod: Scalars["String"];
+};
+
 export type Ingredient = {
   name: Scalars["String"];
   amount: Scalars["Int"];
@@ -27,6 +34,7 @@ export type LoginInput = {
 
 export type Mutation = {
   order: Scalars["Boolean"];
+  editUser: Scalars["Boolean"];
   login: User;
   logout: Scalars["Boolean"];
   register: User;
@@ -34,6 +42,10 @@ export type Mutation = {
 
 export type MutationOrderArgs = {
   data: OrderInput;
+};
+
+export type MutationEditUserArgs = {
+  data: EditUserInput;
 };
 
 export type MutationLoginArgs = {
@@ -47,7 +59,8 @@ export type MutationRegisterArgs = {
 export type Order = {
   id: Scalars["ID"];
   date: Scalars["DateTime"];
-  price: Scalars["Int"];
+  price: Scalars["Float"];
+  name: Scalars["String"];
   address: Scalars["String"];
   phone: Scalars["String"];
   deliveryMethod: Scalars["String"];
@@ -56,6 +69,7 @@ export type Order = {
 };
 
 export type OrderInput = {
+  name: Scalars["String"];
   ingredients: Array<IngredientInput>;
   address: Scalars["String"];
   phone: Scalars["String"];
@@ -89,6 +103,18 @@ export type User = {
   phone: Scalars["String"];
   orders: Array<Order>;
 };
+export type EditUserMutationVariables = {
+  address: Scalars["String"];
+  name: Scalars["String"];
+  deliveryMethod: Scalars["String"];
+  phone: Scalars["String"];
+};
+
+export type EditUserMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "editUser"
+>;
+
 export type LoginMutationVariables = {
   email: Scalars["String"];
   password: Scalars["String"];
@@ -113,6 +139,7 @@ export type OrderMutationVariables = {
   address: Scalars["String"];
   phone: Scalars["String"];
   deliveryMethod: Scalars["String"];
+  name: Scalars["String"];
 };
 
 export type OrderMutation = { __typename?: "Mutation" } & Pick<
