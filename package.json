@@ -11,7 +11,7 @@
     "graphql": "^14.2.1",
     "mobx": "^5.9.4",
     "mobx-react-lite": "^1.2.0",
-    "react": "^16.8.6",
+    "react": "^16.10.2",
     "react-apollo-hooks": "^0.4.5",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
