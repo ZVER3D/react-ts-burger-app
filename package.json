@@ -46,7 +46,7 @@
     "@types/styled-components": "^4.1.14",
     "@types/yup": "^0.26.12",
     "babel-plugin-macros": "^2.5.1",
-    "tslint": "^5.15.0",
+    "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^4.0.0",
     "tslint-react-hooks": "^2.0.0"
