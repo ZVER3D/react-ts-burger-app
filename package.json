@@ -43,7 +43,7 @@
     "@graphql-codegen/typescript-operations": "1.8.1",
     "@types/react-router-dom": "^5.1.0",
     "@types/react-select": "^2.0.17",
-    "@types/styled-components": "^4.1.14",
+    "@types/styled-components": "^4.4.0",
     "@types/yup": "^0.26.24",
     "babel-plugin-macros": "^2.5.1",
     "tslint": "^5.20.0",
